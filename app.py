@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template_string, request, jsonify, session
 import os
 
@@ -36,14 +35,8 @@ def index():
         text-align: center;
         padding: 30px;
     }
-    h2 {
-        color: #d6336c;
-    }
-    .credits {
-        font-size: 1.2em;
-        margin-bottom: 20px;
-        font-weight: 600;
-    }
+    h2 { color: #d6336c; }
+    .credits { font-size: 1.2em; margin-bottom: 20px; font-weight: 600; }
     .paypal-card {
         display: inline-block;
         background: #fff;
@@ -53,10 +46,7 @@ def index():
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         width: 220px;
     }
-    .paypal-card h3 {
-        margin-bottom: 10px;
-        color: #555;
-    }
+    .paypal-card h3 { margin-bottom: 10px; color: #555; }
 </style>
 </head>
 <body>
@@ -83,9 +73,7 @@ for (const pack_id in packages){
   paypal.Buttons({
     createOrder: function(data, actions){
       return actions.order.create({
-        purchase_units:[{
-          amount:{value: packages[pack_id]}
-        }]
+        purchase_units:[{amount:{value: packages[pack_id]}}]
       });
     },
     onApprove: function(data, actions){
@@ -117,5 +105,7 @@ def add_credits():
     session['credits'] = session.get('credits', 0) + credits_to_add
     return jsonify({'credits': session['credits']})
 
+# Render-en production-ready indítás
 if __name__ == '__main__':
-    app.run(debug=False)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
